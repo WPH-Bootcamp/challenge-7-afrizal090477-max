@@ -40,6 +40,7 @@ export function addTodo(text: string): void {
     id: generateUniqueId(),
     text,
     completed: false,
+    createdAt: new Date().toISOString(),
   };
 
   todos.push(newTodo);
