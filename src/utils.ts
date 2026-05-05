@@ -22,3 +22,21 @@ export function isTodo(obj: unknown): obj is Todo {
 export function isTodoArray(data: any): data is Todo[] {
   return Array.isArray(data) && data.every(isTodo);
 }
+
+export function generateUniqueId(): number {
+  return Date.now();
+}
+
+export function formatDate(date: Date = new Date()): string {
+  return date.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+export function isValidString(input: unknown): input is string {
+  return typeof input === "string" && input.trim().length > 0;
+}
