@@ -19,7 +19,7 @@ export function isTodo(obj: unknown): obj is Todo {
     typeof todo.completed === "boolean"
   );
 }
-export function isTodoArray(data: any): data is Todo[] {
+export function isTodoArray(data: unknown): data is Todo[] {
   return Array.isArray(data) && data.every(isTodo);
 }
 
@@ -27,7 +27,8 @@ export function generateUniqueId(): number {
   return Date.now();
 }
 
-export function formatDate(date: Date = new Date()): string {
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
   return date.toLocaleString("id-ID", {
     day: "2-digit",
     month: "2-digit",
