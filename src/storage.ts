@@ -21,11 +21,12 @@ const filePath = path.join(__dirname, "data", "todos.json");
 export function initStorage(): void {
     const dir = path.dirname(filePath);
 if(!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, {recursive: true});
+    fs.mkdirSync(dir, { recursive: true });
 }
-if(!fs.existsSync(dir)) {
+if(!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, "[]", "utf-8");
 }
+console.log("📁 Storage initialized");
 }
 // save todos
 
