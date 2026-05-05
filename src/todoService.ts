@@ -30,7 +30,7 @@ import { generateUniqueId } from "./utils";
 // add Todo
 export function addTodo(text: string): void {
   if (!text || text.trim() === "") {
-    console.log("❌ Text tidak boleh kosong");
+    console.log("❎ Text tidak boleh kosong");
     return;
   }
 
@@ -46,7 +46,7 @@ export function addTodo(text: string): void {
   todos.push(newTodo);
   saveTodos(todos);
 
-  console.log("✔ Todo berhasil ditambahkan");
+  console.log("✅ Todo berhasil ditambahkan");
 }
 
 // mark completed
@@ -56,7 +56,7 @@ export function completeTodo(id: number): void {
   const todo = todos.find((t) => t.id === id);
 
   if (!todo) {
-    console.log("❌ Todo tidak ditemukan");
+    console.log("❎ Todo tidak ditemukan");
     return;
   }
 
@@ -68,7 +68,7 @@ export function completeTodo(id: number): void {
   todo.completed = true;
   saveTodos(todos);
 
-  console.log("✔ Todo ditandai selesai");
+  console.log("✅ Todo ditandai selesai");
 }
 
 // delete Todo
@@ -78,13 +78,13 @@ export function deleteTodo(id: number): void {
   const filtered = todos.filter((t) => t.id !== id);
 
   if (filtered.length === todos.length) {
-    console.log("❌ Todo tidak ditemukan");
+    console.log("❎ Todo tidak ditemukan");
     return;
   }
 
   saveTodos(filtered);
 
-  console.log("✔ Todo berhasil dihapus");
+  console.log("✅ Todo berhasil dihapus");
 }
 
 // list Todo
@@ -92,7 +92,7 @@ export function listTodos(): void {
   const todos = loadTodos();
 
   if (todos.length === 0) {
-    console.log("📭 Belum ada todo");
+    console.log("🗂️ Belum ada todo");
     return;
   }
 
@@ -112,7 +112,7 @@ export function searchTodos(keyword: string): void {
   );
 
   if (results.length === 0) {
-    console.log("❌ Todo tidak ditemukan");
+    console.log("❎ Todo tidak ditemukan");
     return;
   }
 
