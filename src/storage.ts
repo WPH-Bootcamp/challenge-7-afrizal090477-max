@@ -1,7 +1,4 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { Todo } from './types';
-import { isTodoArray } from './utils';
+
 // TODO: Definisikan path file untuk menyimpan data To-Do
 
 // TODO: Buat fungsi untuk membaca To-Do dari file
@@ -11,6 +8,11 @@ import { isTodoArray } from './utils';
 // Hint: Jangan lupa konversi ke JSON string sebelum disimpan
 
 // TODO: Buat fungsi untuk inisialisasi storage (buat file kosong jika belum ada)
+
+import * as fs from 'fs';
+import * as path from 'path';
+import { Todo } from './types';
+import { isTodoArray } from './utils';
 
 
 const filePath = path.join(__dirname, "data", "todos.json");
