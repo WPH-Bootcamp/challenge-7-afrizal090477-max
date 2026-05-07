@@ -119,7 +119,8 @@ export function searchTodos(keyword: string): void {
   const results = todos.filter((todo) =>
     todo.text
       .toLowerCase()
-      .includes(keyword.toLowerCase())
+      .includes(keyword.toLowerCase()) ||
+      todo.id.toString().includes(keyword)
   );
 
   if (results.length === 0) {
@@ -136,7 +137,7 @@ export function searchTodos(keyword: string): void {
         : "[ACTIVE]";
 
     console.log(
-      `${index + 1}. ${status} ${todo.text}`
+      `${index + 1}. ${status} ${todo.text} (ID: ${todo.id})`
     );
   });
 }
