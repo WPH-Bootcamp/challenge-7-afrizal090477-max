@@ -9,54 +9,49 @@
 
 // TODO: Buat fungsi untuk inisialisasi storage (buat file kosong jika belum ada)
 
-import * as fs from 'fs';
-import * as path from 'path';
-import { Todo } from './types';
-import { isTodoArray } from './utils';
 
+import fs from "fs";
+import path from "path";
+import { Todo } from "./types";
 
-const filePath = path.join(__dirname, "data", "todos.json");
+// Path file JSON
+const FILE_PATH = path.join(__dirname, "../todos.json");
 
-// init/membuat folder & file storage
-export function initStorage(): void {
-    const dir = path.dirname(filePath);
-if(!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+// Membaca todos dari file
+export function loadTodos(): Todo[] {
+  try {
+    const data = fs.readFileSync(FILE_PATH, "utf-8");
+
+    const todos: Todo[] = JSON.parse(data);
+
+    return todos;
+  } catch (error) {
+    console.error("Gagal membaca file todos:", error);
+
+    return [];
+  }
 }
-if(!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, "[]", "utf-8");
-}
-console.log("📁 Storage initialized");
-}
-// save todos
 
+// Menyimpan todos ke file
 export function saveTodos(todos: Todo[]): void {
-    try {
-        fs.writeFileSync(filePath, JSON.stringify(todos, null, 2), "utf-8");
-    } catch (error) {
-        console.error("Gagal menyimpan :", error);
-    }
+  try {
+    fs.writeFileSync(
+      FILE_PATH,
+      JSON.stringify(todos, null, 2),
+      "utf-8"
+    );
+  } catch (error) {
+    console.error("Gagal menyimpan todos:", error);
+  }
 }
 
-// load todos
-
-export const loadTodos =(): Todo[] => {
-    try {
-        if (!fs.existsSync(filePath)) return [];
-
-        const data = fs.readFileSync(filePath,"utf-8");
-        const parsed = JSON.parse(data);
-
-        // type guard
-    if (isTodoArray(parsed)) {
-        return parsed;
-    }else {
-        console.error("Format data tidak valid");
-        return [];
+// Inisialisasi storage
+export function initializeStorage(): void {
+  try {
+    if (!fs.existsSync(FILE_PATH)) {
+      fs.writeFileSync(FILE_PATH, "[]", "utf-8");
     }
-    
-    } catch (error) {
-        console.error("Gagal membaca todos:", error);
-      return [];  
-    }
+  } catch (error) {
+    console.error("Gagal inisialisasi storage:", error);
+  }
 }
