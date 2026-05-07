@@ -24,102 +24,119 @@
 // TODO: Buat fungsi untuk mencari To-Do berdasarkan keyword
 
 import { Todo } from "./types";
-import { loadTodos, saveTodos } from "./storage";
-import { generateUniqueId } from "./utils";
 
-// add Todo
+import {
+  loadTodos,
+  saveTodos,
+} from "./storage";
+
+// Tambah To-Do
 export function addTodo(text: string): void {
-  if (!text || text.trim() === "") {
-    console.log("❎ Text tidak boleh kosong");
+  if (!text.trim()) {
+    console.log("Text To-Do tidak boleh kosong");
     return;
   }
 
   const todos = loadTodos();
 
   const newTodo: Todo = {
-    id: generateUniqueId(),
-    text,
-    completed: false,
-    createdAt: new Date().toISOString(),
+    id: Date.now(),
+    text: text.trim(),
+    status: "active",
+    createdAt: new Date(),
   };
 
   todos.push(newTodo);
+
   saveTodos(todos);
 
-  console.log("✅ Todo berhasil ditambahkan");
+  console.log("To-Do berhasil ditambahkan");
 }
 
-// mark completed
+// Selesaikan To-Do
 export function completeTodo(id: number): void {
   const todos = loadTodos();
 
-  const todo = todos.find((t) => t.id === id);
+  const todo = todos.find((todo) => todo.id === id);
 
   if (!todo) {
-    console.log("❎ Todo tidak ditemukan");
+    console.log("To-Do tidak ditemukan");
     return;
   }
 
-  if (todo.completed) {
-    console.log("ℹ️ Todo sudah selesai");
-    return;
-  }
+  todo.status = "done";
 
-  todo.completed = true;
   saveTodos(todos);
 
-  console.log("✅ Todo ditandai selesai");
+  console.log("To-Do berhasil diselesaikan");
 }
 
-// delete Todo
+// Hapus To-Do
 export function deleteTodo(id: number): void {
   const todos = loadTodos();
 
-  const filtered = todos.filter((t) => t.id !== id);
+  const filteredTodos = todos.filter(
+    (todo) => todo.id !== id
+  );
 
-  if (filtered.length === todos.length) {
-    console.log("❎ Todo tidak ditemukan");
+  if (filteredTodos.length === todos.length) {
+    console.log("To-Do tidak ditemukan");
     return;
   }
 
-  saveTodos(filtered);
+  saveTodos(filteredTodos);
 
-  console.log("✅ Todo berhasil dihapus");
+  console.log("To-Do berhasil dihapus");
 }
 
-// list Todo
+// Tampilkan semua To-Do
 export function listTodos(): void {
   const todos = loadTodos();
 
   if (todos.length === 0) {
-    console.log("🗂️ Belum ada todo");
+    console.log("Belum ada To-Do");
     return;
   }
 
-  console.log("\n=== DAFTAR TODO ===");
+  console.log("\n===== TO-DO LIST =====");
 
-  todos.forEach((todo) => {
-    const status = todo.completed ? "[DONE]" : "[ACTIVE]";
-    console.log(`${status} ${todo.id}. ${todo.text}`);
+  todos.forEach((todo, index) => {
+    const status =
+      todo.status === "done"
+        ? "[DONE]"
+        : "[ACTIVE]";
+
+    console.log(
+      `${index + 1}. ${status} ${todo.text}`
+    );
   });
 }
 
+// Cari To-Do
 export function searchTodos(keyword: string): void {
   const todos = loadTodos();
 
-  const results = todos.filter((t) =>
-    t.text.toLowerCase().includes(keyword.toLowerCase())
+  const results = todos.filter((todo) =>
+    todo.text
+      .toLowerCase()
+      .includes(keyword.toLowerCase())
   );
 
   if (results.length === 0) {
-    console.log("❎ Todo tidak ditemukan");
+    console.log("To-Do tidak ditemukan");
     return;
   }
 
-  console.log("\n=== HASIL PENCARIAN ===");
+  console.log("\n===== HASIL PENCARIAN =====");
 
-  results.forEach((todo) => {
-    const status = todo.completed ? "[DONE]" : "[ACTIVE]";
-    console.log(`${status} ${todo.id}. ${todo.text}`);
+  results.forEach((todo, index) => {
+    const status =
+      todo.status === "done"
+        ? "[DONE]"
+        : "[ACTIVE]";
+
+    console.log(
+      `${index + 1}. ${status} ${todo.text}`
+    );
   });
 }
