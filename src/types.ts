@@ -4,20 +4,32 @@
 
 // TODO: Buat interface untuk To-Do item
 
+
 // TODO: Buat tipe untuk status To-Do (active/done)
 
+
 // TODO: Buat tipe untuk fungsi-fungsi yang akan digunakan
+
+
+export type TodoStatus = "active" | "done";
+
 export interface Todo {
   id: number;
   text: string;
-  completed: boolean;
-  createdAt: string;
+  status: TodoStatus;
+  createdAt: Date;
 }
 
-export type TodoStatus = "ACTIVE" | "DONE";
+export type AddTodo = (text: string) => void;
+export type ToggleTodo = (id: number) => void;
+export type DeleteTodo = (id: number) => void;
+export type GetTodos = () => Todo[];
 
-export type AddTodoFn = (text: string) => void;
-export type CompletedTodoFn = (id: number) => void;
-export type DeleteTodoFn = (id: number) => void;
-export type ListTodoFn = () => void;
+
+
+
+
+
+
+
 
