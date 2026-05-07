@@ -1,8 +1,6 @@
 // TODO: Import readline untuk membaca input dari command line
 
-
 // TODO: Import fungsi-fungsi dari todoService
-
 
 // TODO: Import fungsi-fungsi dari utils (termasuk type guards)
 
@@ -23,7 +21,7 @@
 
 // TODO: Jalankan fungsi main
 
-import * as readline from "readline";
+import readline from "readline";
 import {
   addTodo,
   completeTodo,
@@ -32,111 +30,82 @@ import {
   searchTodos,
 } from "./todoService";
 import { isValidString } from "./utils";
-import { initStorage } from "./storage";
+import { initializeStorage } from "./storage";
 
-// init storage
-initStorage();
-
-console.log('Welcome to TypeScript To-Do App!');
-// setup readline
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-// helper biar bisa pakai async/await
-function ask(question: string): Promise<string> {
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => resolve(answer));
-  });
-}
-
-// tampilkan menu
 function showMenu(): void {
-  console.log("\n=== TODO APP ===");
-  console.log("1. Add new todo");
-  console.log("2. Mark todo as complete");
-  console.log("3. Delete todo");
-  console.log("4. List all todos");
-  console.log("5. Search todos");
-  console.log("6. Exit");
+  console.log(`
+===== TO-DO APP =====
+1. Add new todo
+2. Mark todo as complete
+3. Delete todo
+4. List all todos
+5. Search todos
+6. Exit
+`);
 }
 
-// main loop
-async function main(): Promise<void> {
-  let running = true;
+function main(): void {
+  showMenu();
 
-  while (running) {
-    showMenu();
-
-    const choice = (await ask("Pilih menu (1-6): ")).trim();
-
+  rl.question("Pilih menu: ", (choice) => {
     switch (choice) {
-      case "1": {
-        const input = await ask("Masukkan todo: ");
-
-        if (!isValidString(input)) {
-          console.log("❌ Input tidak valid");
-          break;
-        }
-
-        addTodo(input);
+      case "1":
+        rl.question("Masukkan To-Do: ", (text) => {
+          if (!isValidString(text)) {
+            console.log("Input tidak valid");
+          } else {
+            addTodo(text);
+          }
+          main();
+        });
         break;
-      }
 
-      case "2": {
-        const input = await ask("Masukkan ID: ");
-        const id = Number(input);
-
-        if (!input || isNaN(id)) {
-          console.log("❌ ID harus angka");
-          break;
-        }
-
-        completeTodo(id);
+      case "2":
+        rl.question("Masukkan ID To-Do: ", (id) => {
+          completeTodo(Number(id));
+          main();
+        });
         break;
-      }
 
-      case "3": {
-        const input = await ask("Masukkan ID: ");
-        const id = Number(input);
-
-        if (!input || isNaN(id)) {
-          console.log("❌ ID harus angka");
-          break;
-        }
-
-        deleteTodo(id);
+      case "3":
+        rl.question("Masukkan ID To-Do: ", (id) => {
+          deleteTodo(Number(id));
+          main();
+        });
         break;
-      }
 
       case "4":
         listTodos();
+        main();
+
         break;
 
-      case "5": {
-        const keyword = await ask("Masukkan keyword: ");
-
-        if (!isValidString(keyword)) {
-          console.log("❌ Keyword tidak valid");
-          break;
-        }
-
-        searchTodos(keyword);
+      case "5":
+        rl.question("Masukkan keyword: ", (keyword) => {
+          searchTodos(keyword);
+          main();
+        });
         break;
-      }
 
       case "6":
-        console.log("\n👋 Terima kasih!");
-        running = false;
+        console.log("🙏Terima kasih sudah menggunakan aplikasi ini!");
         rl.close();
         break;
 
       default:
-        console.log("❌ Pilihan tidak valid");
+        console.log("Menu tidak valid");
+
+        main();
     }
-  }
+  });
 }
 
-// start app
+// Inisialisasi file storage
+initializeStorage();
+// Jalankan aplikasi
 main();
